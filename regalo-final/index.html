@@ -181,13 +181,13 @@
                 <h2 class="font-script text-5xl gradient-text mb-6 pb-1">Nuestra Historia</h2>
                 
                 <div class="relative w-full rounded-2xl overflow-hidden shadow-[0_15px_30px_rgba(225,29,72,0.3)] border-4 border-white bg-black">
-                    <video controls playsinline preload="metadata" class="w-full h-auto max-h-[60vh] object-contain mx-auto">
-                        <source src="video.mp4" type="video/mp4">
+                    <video id="mi-video" controls playsinline preload="metadata" class="w-full h-auto max-h-[60vh] object-contain mx-auto cursor-pointer" onclick="ponerPantallaCompleta()">
+                        <source src="video.mp4.mp4" type="video/mp4">
                         Tu navegador no soporta la reproducción de video.
                     </video>
                 </div>
                 
-                <p class="mt-8 font-quicksand font-bold text-rose-500 text-sm animate-pulse bg-white/50 inline-block px-5 py-2.5 rounded-full shadow-sm">Dale al play para revivirlo 🎬❤️</p>
+                <p class="mt-8 font-quicksand font-bold text-rose-500 text-sm animate-pulse bg-white/50 inline-block px-5 py-2.5 rounded-full shadow-sm">Toca el vídeo para verlo a pantalla completa 🎬❤️</p>
             </div>
 
             <div id="sec-vale" class="tab-content glass-card rounded-3xl p-7 text-center">
@@ -328,12 +328,13 @@
             }
         });
 
-        // NAVEGACIÓN
+        // NAVEGACIÓN Y REPRODUCCIÓN DEL VÍDEO
         function cambiarTab(tabId, botonPulsado) {
             
-            // Pausar el vídeo automáticamente si cambiamos a otra pestaña
+            const videoElement = document.getElementById('mi-video');
+            
+            // Pausar el vídeo si salimos de la pestaña historia
             if(tabId !== 'historia') {
-                const videoElement = document.querySelector('video');
                 if(videoElement) videoElement.pause();
             }
 
@@ -350,6 +351,25 @@
                 botonPulsado.classList.add('text-rose-600');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Reproducir desde el principio si entramos a historia
+            if(tabId === 'historia' && videoElement) {
+                videoElement.currentTime = 0;
+                // El catch evita que salga un error en la consola si el móvil bloquea el autoplay por seguridad
+                videoElement.play().catch(error => console.log("Toca el play para iniciar"));
+            }
+        }
+
+        // PANTALLA COMPLETA
+        function ponerPantallaCompleta() {
+            const video = document.getElementById('mi-video');
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) { /* Para Safari y iOS */
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) { /* Para IE/Edge Antiguos */
+                video.msRequestFullscreen();
+            }
         }
 
         // CONFETI
