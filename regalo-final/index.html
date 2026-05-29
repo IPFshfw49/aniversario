@@ -22,7 +22,7 @@
         @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
         
         .font-script { font-family: 'Dancing Script', cursive; }
-        
+
         /* Transiciones suaves entre pestañas */
         .tab-content { display: none; opacity: 0; transform: scale(0.95) translateY(10px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-content.active { display: block; opacity: 1; transform: scale(1) translateY(0); animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
@@ -60,7 +60,7 @@
         .gradient-text { background: linear-gradient(to right, #e11d48, #f43f5e, #fb7185, #e11d48); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: shine 3s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Collage de la portada */
+        /* Collage de la portada: AHORA BLOQUEADO MATEMÁTICAMENTE */
         .polaroid-collage { padding: 0.35rem; padding-bottom: 1.8rem; background-color: white; box-shadow: 0 10px 20px rgba(225, 29, 72, 0.2); border-radius: 4px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0s; }
         .polaroid-collage:hover, .polaroid-collage:active { z-index: 100 !important; transform: scale(1.2) rotate(0deg) !important; box-shadow: 0 25px 35px rgba(225, 29, 72, 0.3); }
 
@@ -116,19 +116,20 @@
         <p class="text-rose-800 font-bold mt-4 text-xl z-10 tracking-widest uppercase text-sm bg-white/50 px-6 py-1.5 rounded-full shadow-sm">Ian & Miriam</p>
     </div>
 
-    <!-- BARRA SUPERIOR -->
-    <div class="sticky top-0 z-40 glass-card border-x-0 border-t-0 py-4 text-center">
+    <!-- BARRA SUPERIOR AHORA OCUPA TODO EL ANCHO -->
+    <div class="sticky top-0 z-40 glass-card border-x-0 border-t-0 py-4 text-center shadow-sm">
         <span class="font-script text-3xl gradient-text font-bold"><i class="ri-heart-fill text-rose-400 animate-pulse mr-1"></i> Ian & Miriam <i class="ri-heart-fill text-rose-400 animate-pulse ml-1"></i></span>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO PRINCIPAL CENTRADO -->
     <main class="pt-8 px-5 max-w-md mx-auto relative z-10">
         
         <!-- SECCIÓN 0: INICIO (COLLAGE) -->
         <div id="sec-inicio" class="tab-content active glass-card rounded-3xl p-6 text-center overflow-hidden">
             <h2 class="font-script text-4xl gradient-text mb-4 pb-1 leading-snug">Te quiero muchísimo princesita mía</h2>
             
-            <div class="relative w-full h-[450px] mx-auto mt-6 mb-2">
+            <!-- CONTENEDOR BLOQUEADO: aspect-[4/5] y max-w-[380px] evita cualquier deformación -->
+            <div class="relative w-full max-w-[380px] aspect-[4/5] mx-auto mt-6 mb-2">
                 <img src="fc1.jpg" class="polaroid-collage absolute top-[0%] left-[0%] w-[42%] aspect-square object-cover rotate-[-10deg] z-10" alt="Collage 1">
                 <img src="fc2.jpg" class="polaroid-collage absolute top-[4%] right-[-2%] w-[45%] aspect-[3/4] object-cover rotate-[12deg] z-20" alt="Collage 2">
                 <img src="fc3.jpg" class="polaroid-collage absolute top-[28%] left-[-4%] w-[46%] aspect-square object-cover rotate-[-5deg] z-30" alt="Collage 3">
@@ -181,7 +182,7 @@
                 <img src="vale.png.png" alt="Vale llaollao" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
             </div>
             <!-- El onClick aquí activa el reseteo secreto de los vales -->
-            <h2 onclick="resetearVales()" class="font-script text-4xl gradient-text mb-2 pb-1 select-none">Vale de Llaollao</h2>
+            <h2 onclick="resetearVales()" class="font-script text-4xl gradient-text mb-2 pb-1 select-none cursor-pointer">Vale de Llaollao</h2>
             <p class="text-rose-500 text-xs mb-8 font-bold uppercase tracking-widest bg-rose-100/50 inline-block px-4 py-1 rounded-full">Para disfrutar juntos</p>
             
             <div class="flex flex-wrap justify-center gap-3.5 mb-10" id="circles-container">
@@ -248,7 +249,7 @@
 
     </main>
 
-    <!-- MENÚ INFERIOR FLOTANTE -->
+    <!-- MENÚ INFERIOR FLOTANTE ESTILO MAC DOCK -->
     <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[98%] max-w-[420px] glass-card rounded-full flex justify-around py-2.5 px-1 z-50 shadow-[0_15px_35px_rgba(225,29,72,0.15)]">
         <!-- Inicio -->
         <button onclick="cambiarTab('inicio', this)" class="flex flex-col items-center justify-center text-rose-600 w-1/5 transition-all hover:scale-110 active:scale-95 group relative">
