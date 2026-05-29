@@ -4,177 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversario</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos y Fuentes -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Quicksand', sans-serif; background: linear-gradient(180deg, #fff5f5 0%, #ffe4e6 30%, #fce4ec 100%); min-height: 100vh; overflow-x: hidden; }
-        .font-script { font-family: 'Dancing Script', cursive; }
-        .tab-content { display: none; animation: fadeIn 0.6s ease-out; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Animación Splash */
-        #splash { position: fixed; inset: 0; z-index: 50; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #f48fb1 60%, #ffccbc 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s; }
-        .float-up { animation: floatUp 3s infinite ease-in-out; position: absolute; bottom: 0; }
-        @keyframes floatUp { 0% { transform: translateY(100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
-        
-        /* Corazones flotantes de fondo 3D */
-        .bg-heart {
-            position: fixed; bottom: -50px; font-size: 1.5rem; opacity: 0;
-            animation: floatUpBg infinite linear; pointer-events: none; z-index: 0;
+        /* Fondo animado y estilos globales */
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background: linear-gradient(-45deg, #fff0f5, #ffe4e6, #fce4ec, #fbcfe8); 
+            background-size: 400% 400%; 
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh; 
+            overflow-x: hidden; 
         }
-        .blur-sm { filter: blur(2px); }
-        .blur-md { filter: blur(4px); }
-        @keyframes floatUpBg {
-            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(-110vh) scale(1.2) rotate(25deg); opacity: 0; }
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        
+        .font-script { font-family: 'Dancing Script', cursive; }
+        
+        /* Transiciones suaves entre pestañas */
+        .tab-content { display: none; opacity: 0; transform: scale(0.95) translateY(10px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tab-content.active { display: block; opacity: 1; transform: scale(1) translateY(0); animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.95) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        
+        /* Efecto de Cristal Esmerilado (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(225, 29, 72, 0.15);
         }
 
+        /* Animación Splash */
+        #splash { position: fixed; inset: 0; z-index: 100; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #f48fb1 60%, #ffccbc 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s, visibility 0.8s; }
+        
+        /* Corazones flotantes de fondo 3D */
+        .bg-heart { position: fixed; bottom: -50px; font-size: 1.5rem; opacity: 0; animation: floatUpBg infinite linear; pointer-events: none; z-index: 0; }
+        .blur-sm { filter: blur(2px); }
+        .blur-md { filter: blur(4px); }
+        @keyframes floatUpBg { 0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(-110vh) scale(1.2) rotate(25deg); opacity: 0; } }
+
         /* Texto Brillante (Shimmer Text) */
-        .gradient-text {
-            background: linear-gradient(to right, #e11d48, #f43f5e, #fb7185, #e11d48);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 3s linear infinite;
-        }
+        .gradient-text { background: linear-gradient(to right, #e11d48, #f43f5e, #fb7185, #e11d48); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: shine 3s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
 
         /* Fotos Polaroid balanceándose suavemente */
-        .polaroid { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .polaroid:hover { transform: scale(1.08) rotate(0deg) !important; z-index: 30; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); }
-        .sway-1 { animation: sway1 6s ease-in-out infinite alternate; }
-        .sway-2 { animation: sway2 7s ease-in-out infinite alternate; }
-        @keyframes sway1 { 0% { transform: rotate(-3deg); } 100% { transform: rotate(1deg); } }
-        @keyframes sway2 { 0% { transform: rotate(2deg); } 100% { transform: rotate(-2deg); } }
+        .polaroid { transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: contrast(1.05) saturate(1.1); }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 30; box-shadow: 0 25px 30px -5px rgba(225, 29, 72, 0.3); filter: contrast(1) saturate(1); }
+        .sway-1 { animation: sway1 7s ease-in-out infinite alternate; }
+        .sway-2 { animation: sway2 8s ease-in-out infinite alternate; }
+        @keyframes sway1 { 0% { transform: rotate(-3deg); } 100% { transform: rotate(2deg); } }
+        @keyframes sway2 { 0% { transform: rotate(3deg); } 100% { transform: rotate(-1deg); } }
 
-        /* Latido de corazón */
+        /* Latido de corazón y pulsos */
         .heartbeat { animation: heartbeat 1.5s infinite; }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.15); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
-        }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); } }
+        
+        .btn-pulse { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); animation: pulseBtn 2s infinite cubic-bezier(0.66, 0, 0, 1); }
+        @keyframes pulseBtn { to { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); } }
 
-        /* Pulso para el botón del Vale */
-        .btn-pulse { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); animation: pulseBtn 2s infinite cubic-bezier(0.66, 0, 0, 1); }
-        @keyframes pulseBtn { to { box-shadow: 0 0 0 15px rgba(74, 222, 128, 0); } }
+        .animate-float-text { animation: floatText 3s ease-in-out infinite; }
+        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        
+        /* Barras del medidor */
+        .bar-fill { transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-        .animate-float-text { animation: floatText 2.5s ease-in-out infinite; }
-        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .bar-fill { transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* Confeti cayendo */
+        @keyframes fallConfetti { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
     </style>
 </head>
-<body class="pb-20 relative selection:bg-rose-200">
+<body class="pb-32 relative selection:bg-rose-300 selection:text-white">
 
+    <!-- FONDO DE CORAZONES ANIMADOS GLOBAL -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="bg-heart blur-sm" style="left: 10%; animation-duration: 9s; animation-delay: 0s;">💖</div>
-        <div class="bg-heart" style="left: 25%; animation-duration: 12s; animation-delay: 2s; font-size: 1rem;">💕</div>
-        <div class="bg-heart blur-md" style="left: 45%; animation-duration: 8s; animation-delay: 4s; font-size: 2.5rem;">💗</div>
-        <div class="bg-heart" style="left: 65%; animation-duration: 11s; animation-delay: 1s;">💘</div>
-        <div class="bg-heart blur-sm" style="left: 85%; animation-duration: 14s; animation-delay: 3s; font-size: 1.2rem;">💝</div>
-        <div class="bg-heart" style="left: 15%; animation-duration: 15s; animation-delay: 5s;">💓</div>
-        <div class="bg-heart blur-md" style="left: 75%; animation-duration: 10s; animation-delay: 6s; font-size: 2rem;">💞</div>
+        <div class="bg-heart blur-sm" style="left: 10%; animation-duration: 10s; animation-delay: 0s;">💖</div>
+        <div class="bg-heart" style="left: 25%; animation-duration: 14s; animation-delay: 2s; font-size: 1rem;">💕</div>
+        <div class="bg-heart blur-md" style="left: 45%; animation-duration: 9s; animation-delay: 4s; font-size: 2.5rem;">💗</div>
+        <div class="bg-heart" style="left: 65%; animation-duration: 12s; animation-delay: 1s;">💘</div>
+        <div class="bg-heart blur-sm" style="left: 85%; animation-duration: 15s; animation-delay: 3s; font-size: 1.2rem;">💝</div>
+        <div class="bg-heart" style="left: 15%; animation-duration: 16s; animation-delay: 5s;">💓</div>
+        <div class="bg-heart blur-md" style="left: 75%; animation-duration: 11s; animation-delay: 6s; font-size: 2rem;">💞</div>
         <div class="bg-heart" style="left: 55%; animation-duration: 13s; animation-delay: 7s;">✨</div>
     </div>
 
+    <!-- PANTALLA DE CARGA (SPLASH) -->
     <div id="splash">
-        <span class="float-up text-3xl text-rose-400" style="left: 20%; animation-duration: 2.5s;">❤️</span>
-        <span class="float-up text-2xl text-amber-300" style="left: 50%; animation-duration: 3s;">🍦</span>
-        <span class="float-up text-3xl text-yellow-300" style="left: 80%; animation-duration: 2.2s;">✨</span>
-        <div class="w-32 h-32 rounded-full bg-white/40 flex items-center justify-center mb-6 shadow-xl border-4 border-white z-10 animate-float-text">
-            <img src="foto8.jpg" alt="Ian y Miriam" class="w-28 h-28 object-cover rounded-full">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none flex justify-center items-center">
+            <div class="w-64 h-64 bg-white/30 rounded-full blur-3xl animate-pulse"></div>
         </div>
-        <h1 class="font-script text-5xl font-bold text-center gradient-text drop-shadow-md z-10">¡Feliz Aniversario!</h1>
-        <p class="text-rose-700 font-bold mt-3 text-xl z-10 tracking-widest uppercase text-sm">Ian & Miriam</p>
+        <div class="w-36 h-36 rounded-full bg-white/40 flex items-center justify-center mb-6 shadow-2xl border-4 border-white z-10 animate-float-text relative">
+            <div class="absolute inset-0 rounded-full border-4 border-pink-200 animate-ping opacity-20"></div>
+            <img src="foto8.jpg" alt="Ian y Miriam" class="w-32 h-32 object-cover rounded-full">
+        </div>
+        <h1 class="font-script text-6xl font-bold text-center gradient-text drop-shadow-lg z-10 tracking-wide">¡Feliz Aniversario!</h1>
+        <p class="text-rose-800 font-bold mt-4 text-xl z-10 tracking-widest uppercase text-sm bg-white/50 px-6 py-1.5 rounded-full shadow-sm">Ian & Miriam</p>
     </div>
 
-    <div class="sticky top-0 z-40 bg-white/70 backdrop-blur-md border-b border-rose-100 py-3 text-center shadow-sm">
-        <span class="font-script text-2xl gradient-text font-bold"><i class="ri-heart-fill text-rose-400 animate-pulse"></i> Ian & Miriam <i class="ri-heart-fill text-rose-400 animate-pulse"></i></span>
+    <!-- BARRA SUPERIOR -->
+    <div class="sticky top-0 z-40 glass-card border-x-0 border-t-0 py-4 text-center">
+        <span class="font-script text-3xl gradient-text font-bold"><i class="ri-heart-fill text-rose-400 animate-pulse mr-1"></i> Ian & Miriam <i class="ri-heart-fill text-rose-400 animate-pulse ml-1"></i></span>
     </div>
 
-    <main class="pt-6 px-4 max-w-md mx-auto relative z-10">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="pt-8 px-5 max-w-md mx-auto relative z-10">
         
-        <div id="sec-vale" class="tab-content active bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white/50 text-center">
-            <div class="overflow-hidden rounded-xl mb-5 shadow-md">
-                <img src="vale.png.png" alt="Vale llaollao" class="w-full h-56 object-cover hover:scale-105 transition-transform duration-500">
+        <!-- SECCIÓN 1: VALE -->
+        <div id="sec-vale" class="tab-content active glass-card rounded-3xl p-7 text-center">
+            <div class="relative overflow-hidden rounded-2xl mb-6 shadow-lg group">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                <img src="vale.png.png" alt="Vale llaollao" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
             </div>
-            <h2 class="font-script text-4xl gradient-text mb-1 pb-1">Vale de Llaollao</h2>
-            <p class="text-rose-400 text-sm mb-6 font-bold uppercase tracking-wide">Para disfrutar juntos</p>
+            <h2 class="font-script text-4xl gradient-text mb-2 pb-1">Vale de Llaollao</h2>
+            <p class="text-rose-500 text-xs mb-8 font-bold uppercase tracking-widest bg-rose-100/50 inline-block px-4 py-1 rounded-full">Para disfrutar juntos</p>
             
-            <div class="flex flex-wrap justify-center gap-3 mb-8" id="circles-container">
-                </div>
+            <div class="flex flex-wrap justify-center gap-3.5 mb-10" id="circles-container">
+                <!-- Los círculos se generan por JavaScript -->
+            </div>
 
-            <button id="btn-canjear" onclick="canjearYogur()" class="btn-pulse bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold px-8 py-3.5 rounded-full shadow-lg active:scale-95 transition-all duration-300 mb-4 group relative overflow-hidden">
-                <span class="relative z-10 flex items-center gap-2"><i class="ri-sparkling-fill"></i> Canjear 1 Yogur</span>
-                <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+            <button id="btn-canjear" onclick="canjearYogur()" class="btn-pulse bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-bold px-10 py-4 rounded-full shadow-[0_10px_20px_rgba(16,185,129,0.3)] active:scale-95 transition-all duration-300 mb-5 group relative overflow-hidden text-lg">
+                <span class="relative z-10 flex items-center justify-center gap-2"><i class="ri-sparkling-2-fill text-xl"></i> Canjear 1 Yogur</span>
+                <div class="absolute inset-0 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left ease-out duration-500"></div>
             </button>
-            <p id="msg-vale" class="font-bold text-rose-500 text-lg h-6 drop-shadow-sm">¡Que aprovecheee! Quedan 7 vales.</p>
+            <p id="msg-vale" class="font-bold text-rose-600 text-xl h-8 drop-shadow-sm transition-all duration-300">¡Que aprovecheee! Quedan 7 vales.</p>
         </div>
 
-        <div id="sec-momentos" class="tab-content bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white/50 text-center">
-            <h2 class="font-script text-4xl gradient-text mb-8 pb-1">Nuestros Momentos</h2>
-            <div class="flex flex-col gap-10 relative">
-                <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-rose-200/50 -translate-x-1/2 -z-10 rounded-full"></div>
+        <!-- SECCIÓN 2: MOMENTOS (Galería Polaroid) -->
+        <div id="sec-momentos" class="tab-content glass-card rounded-3xl p-7 text-center">
+            <h2 class="font-script text-5xl gradient-text mb-10 pb-1">Nuestros Momentos</h2>
+            <div class="flex flex-col gap-12 relative">
+                <!-- Línea conectora de fondo -->
+                <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-rose-200/20 via-rose-300/60 to-rose-200/20 -translate-x-1/2 -z-10 rounded-full blur-[1px]"></div>
                 
-                <img src="foto1.jpg" class="polaroid sway-1 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 1">
-                <img src="foto2.jpg" class="polaroid sway-2 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 2">
-                <img src="foto3.jpg" class="polaroid sway-1 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 3">
-                <img src="foto4.jpg" class="polaroid sway-2 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 4">
-                <img src="foto5.jpg" class="polaroid sway-1 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 5">
-                <img src="foto6.jpg" class="polaroid sway-2 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 6">
-                <img src="foto7.jpg" class="polaroid sway-1 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 7">
-                <img src="foto8.jpg" class="polaroid sway-2 w-full h-72 object-cover rounded-xl p-2.5 pb-10 bg-white shadow-lg relative" alt="Momento 8">
+                <!-- Las 8 fotos polaroid -->
+                <div class="relative"><img src="foto1.jpg" class="polaroid sway-1 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 1"></div>
+                <div class="relative"><img src="foto2.jpg" class="polaroid sway-2 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 2"></div>
+                <div class="relative"><img src="foto3.jpg" class="polaroid sway-1 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 3"></div>
+                <div class="relative"><img src="foto4.jpg" class="polaroid sway-2 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 4"></div>
+                <div class="relative"><img src="foto5.jpg" class="polaroid sway-1 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 5"></div>
+                <div class="relative"><img src="foto6.jpg" class="polaroid sway-2 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 6"></div>
+                <div class="relative"><img src="foto7.jpg" class="polaroid sway-1 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 7"></div>
+                <div class="relative"><img src="foto8.jpg" class="polaroid sway-2 w-full h-80 object-cover rounded-xl p-3 pb-12 bg-white shadow-xl" alt="Momento 8"></div>
             </div>
-            <p class="mt-10 font-script text-3xl gradient-text animate-pulse">Y los que quedan por vivir... ❤️</p>
+            <p class="mt-14 font-script text-4xl gradient-text animate-pulse">Y los que quedan por vivir... ❤️</p>
         </div>
 
-        <div id="sec-medidor" class="tab-content bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white/50 text-center">
-            <h2 class="font-script text-4xl gradient-text mb-3 pb-1">Medidor de Amor</h2>
+        <!-- SECCIÓN 3: MEDIDOR -->
+        <div id="sec-medidor" class="tab-content glass-card rounded-3xl p-7 text-center">
+            <h2 class="font-script text-4xl gradient-text mb-4 pb-1">Medidor de Amor</h2>
             
-            <div class="w-full min-h-[5rem] flex items-center justify-center relative z-20 mb-4">
-                <span id="msg-medidor" class="text-rose-500 font-bold text-xl leading-snug text-center px-2 drop-shadow-md"></span>
+            <div class="w-full min-h-[5.5rem] flex items-center justify-center relative z-20 mb-6">
+                <span id="msg-medidor" class="text-rose-600 font-bold text-2xl leading-snug text-center px-2 drop-shadow-md"></span>
             </div>
 
-            <div class="flex justify-around items-end h-72 mb-10 mt-2 relative z-10 bg-white/40 p-4 rounded-3xl shadow-inner border border-rose-50">
-                <div class="flex flex-col items-center w-24">
-                    <div class="h-48 w-12 bg-white rounded-full flex items-end overflow-hidden mb-4 relative shadow-[inset_0_4px_10px_rgba(0,0,0,0.1)]">
-                        <div id="bar-ian" class="w-full bg-gradient-to-t from-rose-400 via-rose-500 to-rose-600 bar-fill rounded-full" style="height: 0%;"></div>
-                        <span id="txt-ian" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold drop-shadow-md z-10 text-sm">0%</span>
+            <div class="flex justify-around items-end h-80 mb-12 mt-2 relative z-10 bg-white/50 p-5 rounded-[2.5rem] shadow-[inset_0_4px_15px_rgba(225,29,72,0.08)] border border-white">
+                <!-- Barra Ian -->
+                <div class="flex flex-col items-center w-28">
+                    <div class="h-52 w-14 bg-white/80 rounded-full flex items-end overflow-hidden mb-5 relative shadow-[inset_0_4px_12px_rgba(0,0,0,0.1)] border border-rose-100">
+                        <div id="bar-ian" class="w-full bg-gradient-to-t from-rose-400 via-rose-500 to-rose-600 bar-fill rounded-full relative overflow-hidden" style="height: 0%;">
+                            <div class="absolute inset-0 bg-white/20 w-full h-full" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); animation: shine 2s infinite;"></div>
+                        </div>
+                        <span id="txt-ian" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] z-10 text-base">0%</span>
                     </div>
-                    <span class="font-bold text-rose-600 mb-4 text-lg">Ian</span>
-                    <button onclick="sumarIan()" class="heartbeat w-16 h-16 rounded-full bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-200 text-3xl shadow-lg active:scale-90 hover:from-rose-100 hover:to-rose-200 transition-all">❤️</button>
+                    <span class="font-bold text-rose-600 mb-5 text-xl">Ian</span>
+                    <button onclick="sumarIan()" class="heartbeat w-16 h-16 rounded-full bg-gradient-to-br from-white to-rose-100 border-2 border-rose-200 text-3xl shadow-[0_8px_16px_rgba(225,29,72,0.2)] active:scale-90 hover:from-rose-50 hover:to-rose-200 transition-all flex items-center justify-center">❤️</button>
                 </div>
 
-                <div class="flex flex-col items-center w-24">
-                    <div class="h-48 w-12 bg-white rounded-full flex items-end overflow-hidden mb-4 relative shadow-[inset_0_4px_10px_rgba(0,0,0,0.1)]">
-                        <div id="bar-miriam" class="w-full bg-gradient-to-t from-pink-400 via-pink-500 to-pink-600 bar-fill rounded-full" style="height: 0%;"></div>
-                        <span id="txt-miriam" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold drop-shadow-md z-10 text-sm">0%</span>
+                <!-- Barra Miriam -->
+                <div class="flex flex-col items-center w-28">
+                    <div class="h-52 w-14 bg-white/80 rounded-full flex items-end overflow-hidden mb-5 relative shadow-[inset_0_4px_12px_rgba(0,0,0,0.1)] border border-pink-100">
+                        <div id="bar-miriam" class="w-full bg-gradient-to-t from-pink-400 via-pink-500 to-pink-600 bar-fill rounded-full relative overflow-hidden" style="height: 0%;">
+                             <div class="absolute inset-0 bg-white/20 w-full h-full" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); animation: shine 2s infinite; animation-delay: 1s;"></div>
+                        </div>
+                        <span id="txt-miriam" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] z-10 text-base">0%</span>
                     </div>
-                    <span class="font-bold text-pink-600 mb-4 text-lg">Miriam</span>
-                    <button onclick="sumarMiriam()" class="heartbeat w-16 h-16 rounded-full bg-gradient-to-br from-pink-50 to-pink-100 border-2 border-pink-200 text-3xl shadow-lg active:scale-90 hover:from-pink-100 hover:to-pink-200 transition-all" style="animation-delay: 0.5s">💖</button>
+                    <span class="font-bold text-pink-600 mb-5 text-xl">Miriam</span>
+                    <button onclick="sumarMiriam()" class="heartbeat w-16 h-16 rounded-full bg-gradient-to-br from-white to-pink-100 border-2 border-pink-200 text-3xl shadow-[0_8px_16px_rgba(236,72,153,0.2)] active:scale-90 hover:from-pink-50 hover:to-pink-200 transition-all flex items-center justify-center" style="animation-delay: 0.5s">💖</button>
                 </div>
             </div>
-            <p class="text-sm text-rose-400 font-bold bg-white/50 py-2 rounded-full inline-block px-4">Toca los corazones para llenar las barras</p>
+            <p class="text-sm text-rose-500 font-bold bg-white/70 py-2.5 px-6 rounded-full inline-block shadow-sm">Toca los corazones para llenar las barras</p>
         </div>
 
     </main>
 
-    <div class="fixed bottom-0 w-full bg-white/90 backdrop-blur-lg border-t border-rose-100 flex justify-around py-3 z-50 pb-6 shadow-[0_-10px_20px_rgba(225,29,72,0.05)]">
-        <button onclick="cambiarTab('vale')" class="flex flex-col items-center text-rose-500 w-1/3 transition-all hover:scale-105 active:scale-95">
-            <i class="ri-ticket-2-line text-2xl mb-1"></i><span class="text-xs font-bold">Vale</span>
+    <!-- MENÚ INFERIOR FLOTANTE (DOCK ESTILO iOS) -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm glass-card rounded-full flex justify-around py-3 px-2 z-50 shadow-[0_15px_35px_rgba(225,29,72,0.15)]">
+        <button onclick="cambiarTab('vale')" class="flex flex-col items-center justify-center text-rose-600 w-1/3 transition-all hover:scale-110 active:scale-95 group">
+            <div class="p-2 rounded-full group-hover:bg-rose-100/50 transition-colors duration-300">
+                <i class="ri-ticket-2-fill text-2xl drop-shadow-sm"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider mt-0.5">Vale</span>
         </button>
-        <button onclick="cambiarTab('momentos')" class="flex flex-col items-center text-rose-300 w-1/3 border-l border-r border-rose-100 transition-all hover:scale-105 active:scale-95">
-            <i class="ri-image-line text-2xl mb-1"></i><span class="text-xs font-bold">Momentos</span>
+        <button onclick="cambiarTab('momentos')" class="flex flex-col items-center justify-center text-rose-300 w-1/3 transition-all hover:scale-110 active:scale-95 group relative">
+            <div class="absolute left-0 top-2 bottom-2 w-[1px] bg-rose-200/50"></div>
+            <div class="absolute right-0 top-2 bottom-2 w-[1px] bg-rose-200/50"></div>
+            <div class="p-2 rounded-full group-hover:bg-rose-100/50 transition-colors duration-300">
+                <i class="ri-gallery-fill text-2xl drop-shadow-sm"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider mt-0.5">Momentos</span>
         </button>
-        <button onclick="cambiarTab('medidor')" class="flex flex-col items-center text-rose-300 w-1/3 transition-all hover:scale-105 active:scale-95">
-            <i class="ri-heart-pulse-line text-2xl mb-1"></i><span class="text-xs font-bold">Medidor</span>
+        <button onclick="cambiarTab('medidor')" class="flex flex-col items-center justify-center text-rose-300 w-1/3 transition-all hover:scale-110 active:scale-95 group">
+            <div class="p-2 rounded-full group-hover:bg-rose-100/50 transition-colors duration-300">
+                <i class="ri-heart-pulse-fill text-2xl drop-shadow-sm"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider mt-0.5">Medidor</span>
         </button>
     </div>
 
@@ -183,10 +217,125 @@
         setTimeout(() => {
             const splash = document.getElementById('splash');
             splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
             setTimeout(() => splash.style.display = 'none', 800);
-        }, 3000);
+        }, 3500);
 
         // --- 2. NAVEGACIÓN ENTRE PESTAÑAS ---
         function cambiarTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('sec-' + tabId).classList.add
+            document.getElementById('sec-' + tabId).classList.add('active');
+            
+            const botones = document.querySelectorAll('.fixed.bottom-6 button');
+            botones.forEach(btn => {
+                btn.classList.remove('text-rose-600');
+                btn.classList.add('text-rose-300');
+            });
+            event.currentTarget.classList.remove('text-rose-300');
+            event.currentTarget.classList.add('text-rose-600');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- FUNCION MAGICA: LLUVIA DE CONFETI ---
+        function lanzarConfeti() {
+            const iconos = ['💖', '✨', '🌸', '🍦', '💝', '💕'];
+            for(let i = 0; i < 40; i++) {
+                let confeti = document.createElement('div');
+                confeti.innerText = iconos[Math.floor(Math.random() * iconos.length)];
+                confeti.style.position = 'fixed';
+                confeti.style.left = Math.random() * 100 + 'vw';
+                confeti.style.top = '-10vh';
+                confeti.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+                confeti.style.zIndex = '9999';
+                confeti.style.pointerEvents = 'none';
+                confeti.style.animation = `fallConfetti ${Math.random() * 3 + 2.5}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+                document.body.appendChild(confeti);
+                setTimeout(() => confeti.remove(), 6000);
+            }
+        }
+
+        // --- 3. LÓGICA DEL VALE ---
+        let valesConsumidos = 0;
+        const maxVales = 7;
+        const container = document.getElementById('circles-container');
+        
+        for(let i=1; i<=maxVales; i++) {
+            container.innerHTML += `<div id="circulo-${i}" class="w-14 h-14 rounded-full border-[3px] border-emerald-400 text-emerald-500 flex items-center justify-center text-xl font-bold bg-white/90 backdrop-blur-md transition-all duration-500 shadow-md">${i}</div>`;
+        }
+
+        function canjearYogur() {
+            if (valesConsumidos < maxVales) {
+                valesConsumidos++;
+                const circulo = document.getElementById(`circulo-${valesConsumidos}`);
+                circulo.classList.replace('border-emerald-400', 'border-rose-200');
+                circulo.classList.replace('text-emerald-500', 'text-transparent');
+                circulo.classList.replace('bg-white/90', 'bg-rose-50/90');
+                
+                circulo.innerHTML = '<span class="text-rose-500 text-3xl animate-float-text inline-block drop-shadow-md">❤️</span>';
+
+                const quedan = maxVales - valesConsumidos;
+                if(quedan > 0) {
+                    document.getElementById('msg-vale').innerHTML = `¡Que aprovecheee! <br> <span class="text-rose-400 text-lg font-medium">Quedan ${quedan} vales.</span>`;
+                } else {
+                    document.getElementById('msg-vale').innerText = "✨ Ñam Ñam Ñam ✨";
+                    const btn = document.getElementById('btn-canjear');
+                    btn.classList.replace('from-emerald-400', 'from-gray-300');
+                    btn.classList.replace('to-teal-500', 'to-gray-400');
+                    btn.classList.remove('active:scale-95', 'btn-pulse');
+                    btn.style.boxShadow = 'none';
+                    btn.innerHTML = '<span class="relative z-10 flex items-center justify-center gap-2"><i class="ri-check-double-line text-xl"></i> Agotado</span>';
+                    
+                    // ¡Lanzar confeti al terminar los yogures!
+                    lanzarConfeti();
+                }
+            }
+        }
+
+        // --- 4. LÓGICA DEL MEDIDOR DE AMOR ---
+        let amorIan = 0;
+        let amorMiriam = 0;
+        let confetiLanzado = false;
+
+        function actualizarBarras() {
+            document.getElementById('bar-ian').style.height = amorIan + '%';
+            document.getElementById('txt-ian').innerText = amorIan + '%';
+            document.getElementById('bar-miriam').style.height = amorMiriam + '%';
+            document.getElementById('txt-miriam').innerText = amorMiriam + '%';
+
+            const msg = document.getElementById('msg-medidor');
+            
+            msg.classList.remove('animate-float-text');
+            void msg.offsetWidth;
+            
+            if (amorIan >= 100) {
+                msg.innerText = "✨ Yo siempre te querré un poquito mas ✨";
+                msg.classList.add('animate-float-text');
+                
+                // Lanzar confeti la primera vez que llega al 100%
+                if(!confetiLanzado) {
+                    lanzarConfeti();
+                    confetiLanzado = true;
+                }
+            } else if (amorIan >= 60 || amorMiriam >= 60) {
+                msg.innerText = "✨ ¡Cuánto amor! ✨";
+                msg.classList.add('animate-float-text');
+            } else if (amorIan >= 30 || amorMiriam >= 30) {
+                msg.innerText = "✨ ¡Esto se calienta! ✨";
+                msg.classList.add('animate-float-text');
+            }
+        }
+
+        function sumarIan() {
+            if (amorIan < 100) amorIan = Math.min(amorIan + 10, 100);
+            actualizarBarras();
+        }
+
+        function sumarMiriam() {
+            if (amorMiriam < 100) amorMiriam = Math.min(amorMiriam + 10, 100);
+            if (amorIan < 100) amorIan = Math.min(amorIan + 20, 100);
+            actualizarBarras();
+        }
+    </script>
+</body>
+</html>
